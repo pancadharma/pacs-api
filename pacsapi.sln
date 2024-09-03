@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33502.453
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pacsapi", "ManajemenAssetAPI\pacsapi.csproj", "{1F1A4E8D-C46B-47F4-8683-C886E4BD9A63}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1F1A4E8D-C46B-47F4-8683-C886E4BD9A63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F1A4E8D-C46B-47F4-8683-C886E4BD9A63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F1A4E8D-C46B-47F4-8683-C886E4BD9A63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F1A4E8D-C46B-47F4-8683-C886E4BD9A63}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4874A371-B9A5-4C0F-9A5B-241706765B8B}
+	EndGlobalSection
+EndGlobal
