@@ -34,5 +34,16 @@ namespace pacsapi.Repository
                 return order;
             }
         }
+
+        private ResultRepository result;
+        public ResultRepository Result
+        {
+            get
+            {
+                result ??= new ResultRepository(GetConnectionString(SqlConnection.MainConnection), _mapper, _config);
+
+                return result;
+            }
+        }
     }
 }

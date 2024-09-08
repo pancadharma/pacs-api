@@ -18,28 +18,32 @@ namespace pacsapi.Controllers
             _repository = repository;
         }
 
-        [HttpGet("List")]
-        public async Task<DataResultModelList<BarangModelListAndGetByKodeBarang>> GetListBarang()
+        [HttpPost]
+        public async Task<ActionResult<DataResultModel<OrderPost>>> OrderPost(OrderPost model)
         {
-
-            var result = await _repository.Order.GetDataBarangList();
-
-            return result;
-        }
-
-
-        [HttpPut]
-
-        public async Task<ActionResult<DataResultModel<UpdateBarang>>> UpdateBarang(string KodeBarang, int PenerimaanId)
-        {
-            var result = await _repository.Order.UpdateDataBarang(KodeBarang, PenerimaanId);
-
-            if(result.TotalCount == 0)
+            if (!ModelState.IsValid)
             {
-                return BadRequest("Invalid Value Parameter");
+                return BadRequest(ModelState);
             }
+
+            var result = await _repository.Order.OrderInsert(model);
 
             return Ok(result);
         }
+
+        [HttpPut]
+        [Route("{accession_Number}")]
+        public async Task<ActionResult<DataResultModel<OrderPut>>> OrderPut([FromRoute] string accession_Number, OrderPut model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _repository.Order.OrderPut(accession_Number, model);
+
+            return Ok(result);
+        }
+
     }
 }

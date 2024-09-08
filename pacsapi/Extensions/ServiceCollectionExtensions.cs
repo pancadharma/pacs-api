@@ -21,7 +21,7 @@ namespace Mahas.Extensions
             services.AddSwaggerGen(c =>
             {
 
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Manajemen Asset API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PACS API", Version = "v1" });
 
                 c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
 

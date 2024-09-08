@@ -17,70 +17,134 @@ namespace pacsapi.Repository
             _configuration = configuration;
         }
 
-        public async Task<DataResultModel<BarangModelListAndGetByKodeBarang>> GetDataBarangByKodeBarang(string KodeBarang)
-        {
-            using var conn = new SqlConnection(_connString);
-
-            var result = await conn.QueryFirstOrDefaultAsync<BarangModelListAndGetByKodeBarang>("SELECT * FROM Aset_GetData_Barang(@KodeBarang)", new
-            {
-                KodeBarang = KodeBarang,
-            });
-
-            var totalCount = 0;
-
-            if (result != null)
-            {
-                totalCount = 1;
-            }
-       
-            var data = new DataResultModel<BarangModelListAndGetByKodeBarang>(totalCount, result);
-
-            return data;
-
-        }
-
-        public async Task<DataResultModelList<BarangModelListAndGetByKodeBarang>> GetDataBarangList()
-        {
-            using var conn = new SqlConnection(_connString);
-
-            var result = await conn.QueryAsync<BarangModelListAndGetByKodeBarang>("SELECT * FROM Aset_ListData_Barang()");
-
-            var totalCount = result.Count();
-
-            var data = new DataResultModelList<BarangModelListAndGetByKodeBarang>(totalCount, result);
-
-            return data;
-
-        }
-
-        private async Task<int> UpdateDataBarangSP(string KodeBarang, int PenerimaanId)
+        public async Task<DataResultModel<OrderPost>> OrderInsert(OrderPost model)
         {
             using var connection = new SqlConnection(_connString);
 
-            var result = await connection.ExecuteAsync("Aset_updatedatabarang", new
+            // Parameter yang akan dikirim ke stored procedure sesuai dengan properti pada model OrderPost
+            var parameters = new
             {
-                Penerimaan_ID = PenerimaanId,
-                Kode_Barang = KodeBarang
-            },
+                Accession_Number = model.Accession_Number,
+                Modality = model.Modality,
+                Institution_Name = model.Institution_Name,
+                Ref_Physician_Name = model.Ref_Physician_Name,
+                Patient_Name = model.Patient_Name,
+                Patient_ID = model.Patient_ID,
+                Patient_Birth_Date = model.Patient_Birth_Date,
+                Patient_Age = model.Patient_Age,
+                Patient_Sex = model.Patient_Sex,
+                Patient_Weight = model.Patient_Weight,
+                Requesting_Physician = model.Requesting_Physician,
+                Req_Proc_Desc = model.Req_Proc_Desc,
+                Admission_ID = model.Admission_ID,
+                Sch_Station_AE_Title = model.Sch_Station_AE_Title,
+                Sch_Station_Name = model.Sch_Station_Name,
+                Sch_Proc_Step_Start_Date = model.Sch_Proc_Step_Start_Date,
+                Sch_Proc_Step_Start_Time = model.Sch_Proc_Step_Start_Time,
+                Sch_Perf_Physician_Name = model.Sch_Perf_Physician_Name,
+                Sch_Proc_Step_Desc = model.Sch_Proc_Step_Desc,
+                Sch_Proc_Step_ID = model.Sch_Proc_Step_ID,
+                Sch_Proc_Step_Location = model.Sch_Proc_Step_Location,
+                Req_Proc_ID = model.Req_Proc_ID,
+                Reason_for_the_Req_Proc = model.Reason_for_the_Req_Proc,
+                Req_Proc_Priority = model.Req_Proc_Priority,
+                Order_Status = model.Order_Status,
+                Error_Desc = model.Error_Desc,
+                IPD_Field1 = model.IPD_Field1,
+                IPD_Field2 = model.IPD_Field2,
+                IPD_Field3 = model.IPD_Field3,
+                IPD_Field4 = model.IPD_Field4,
+                IPD_Field5 = model.IPD_Field5,
+                IPD_Field6 = model.IPD_Field6,
+                IPD_Field7 = model.IPD_Field7,
+                IPD_Field8 = model.IPD_Field8,
+                IPD_Field9 = model.IPD_Field9,
+                IPD_Field10 = model.IPD_Field10,
+                IPD_Field11 = model.IPD_Field11,
+                IPD_Field12 = model.IPD_Field12,
+                IPD_Field13 = model.IPD_Field13,
+                IPD_Field14 = model.IPD_Field14,
+                IPD_Field15 = model.IPD_Field15
+            };
 
-            commandType: System.Data.CommandType.StoredProcedure);
+            // Menjalankan stored procedure Insert_HIS_ORDER
+            var result = await connection.ExecuteAsync(
+                "Insert_HIS_ORDER",
+                parameters,
+                commandType: System.Data.CommandType.StoredProcedure
+            );
 
-            return result;
-
+            // Mengembalikan hasil operasi
+            return new DataResultModel<OrderPost>(
+                totalcount: 1, // Sesuaikan dengan jumlah item yang diinginkan
+                data: model,
+                success: result > 0 // Success jika hasil eksekusi lebih dari 0
+            );
         }
 
-        public async Task<DataResultModel<UpdateBarang>> UpdateDataBarang(string KodeBarang, int PenerimaanId)
+        public async Task<DataResultModel<OrderPut>> OrderPut(string accession_Number, OrderPut model)
         {
-            var result = await UpdateDataBarangSP(KodeBarang, PenerimaanId);
+            using var connection = new SqlConnection(_connString);
 
-            var model = new UpdateBarang();
+            // Parameter yang akan dikirim ke stored procedure sesuai dengan properti pada model OrderPost
+            var parameters = new
+            {
+                Accession_Number = accession_Number,
+                Modality = model.Modality,
+                Institution_Name = model.Institution_Name,
+                Ref_Physician_Name = model.Ref_Physician_Name,
+                Patient_Name = model.Patient_Name,
+                Patient_ID = model.Patient_ID,
+                Patient_Birth_Date = model.Patient_Birth_Date,
+                Patient_Age = model.Patient_Age,
+                Patient_Sex = model.Patient_Sex,
+                Patient_Weight = model.Patient_Weight,
+                Requesting_Physician = model.Requesting_Physician,
+                Req_Proc_Desc = model.Req_Proc_Desc,
+                Admission_ID = model.Admission_ID,
+                Sch_Station_AE_Title = model.Sch_Station_AE_Title,
+                Sch_Station_Name = model.Sch_Station_Name,
+                Sch_Proc_Step_Start_Date = model.Sch_Proc_Step_Start_Date,
+                Sch_Proc_Step_Start_Time = model.Sch_Proc_Step_Start_Time,
+                Sch_Perf_Physician_Name = model.Sch_Perf_Physician_Name,
+                Sch_Proc_Step_Desc = model.Sch_Proc_Step_Desc,
+                Sch_Proc_Step_ID = model.Sch_Proc_Step_ID,
+                Sch_Proc_Step_Location = model.Sch_Proc_Step_Location,
+                Req_Proc_ID = model.Req_Proc_ID,
+                Reason_for_the_Req_Proc = model.Reason_for_the_Req_Proc,
+                Req_Proc_Priority = model.Req_Proc_Priority,
+                Order_Status = model.Order_Status,
+                Error_Desc = model.Error_Desc,
+                IPD_Field1 = model.IPD_Field1,
+                IPD_Field2 = model.IPD_Field2,
+                IPD_Field3 = model.IPD_Field3,
+                IPD_Field4 = model.IPD_Field4,
+                IPD_Field5 = model.IPD_Field5,
+                IPD_Field6 = model.IPD_Field6,
+                IPD_Field7 = model.IPD_Field7,
+                IPD_Field8 = model.IPD_Field8,
+                IPD_Field9 = model.IPD_Field9,
+                IPD_Field10 = model.IPD_Field10,
+                IPD_Field11 = model.IPD_Field11,
+                IPD_Field12 = model.IPD_Field12,
+                IPD_Field13 = model.IPD_Field13,
+                IPD_Field14 = model.IPD_Field14,
+                IPD_Field15 = model.IPD_Field15
+            };
 
-            model.Kode_Barang = result == 0 ? null : KodeBarang;
-            model.Penerimaan_ID = result == 0  ? null : PenerimaanId;
+            // Menjalankan stored procedure Insert_HIS_ORDER
+            var result = await connection.ExecuteAsync(
+                "Update_HIS_ORDER",
+                parameters,
+                commandType: System.Data.CommandType.StoredProcedure
+            );
 
-            var data = new DataResultModel<UpdateBarang>(result, model);
-
-            return data;
+            // Mengembalikan hasil operasi
+            return new DataResultModel<OrderPut>(
+                totalcount: 1, // Sesuaikan dengan jumlah item yang diinginkan
+                data: model,
+                success: result > 0 // Success jika hasil eksekusi lebih dari 0
+            );
         }
     }
 }
